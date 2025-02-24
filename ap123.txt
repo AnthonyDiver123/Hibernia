@@ -1,3 +1,5 @@
+/pages
+  ├── index.js  <-- Your main file
 {
   "scripts": {
     "dev": "next dev",
