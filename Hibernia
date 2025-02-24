@@ -1,0 +1,63 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
+export default function InvestmentApp() {
+  const [investment, setInvestment] = useState(1);
+  const [holdings, setHoldings] = useState(0);
+  const [projection, setProjection] = useState(0);
+
+  const handleInvest = () => {
+    const newHoldings = holdings + investment;
+    setHoldings(newHoldings);
+    setProjection(newHoldings * 365); // Yearly projection
+  };
+
+  return (
+    <div className="p-6 max-w-lg mx-auto">
+      <h1 className="text-2xl font-bold mb-4 text-center">Investment Dashboard</h1>
+      
+      <Tabs defaultValue="dashboard">
+        <TabsList className="flex justify-center space-x-2 mb-4">
+          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          <TabsTrigger value="invest">Invest</TabsTrigger>
+          <TabsTrigger value="community">Community</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="dashboard">
+          <Card className="mb-4">
+            <CardContent>
+              <p className="text-lg text-center">Current Holdings: <strong>{holdings.toFixed(2)} Tokens</strong></p>
+              <p className="text-lg text-center">Projected Holdings (1 Year): <strong>{projection.toFixed(2)} Tokens</strong></p>
+              <Progress value={(holdings / (projection || 1)) * 100} className="mt-2" />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="invest">
+          <Card className="mb-4">
+            <CardContent>
+              <h2 className="text-lg font-semibold mb-2 text-center">Daily Investment</h2>
+              <Input type="number" min="1" value={investment} onChange={(e) => setInvestment(Number(e.target.value))} className="w-full" />
+              <Button className="mt-2 w-full" onClick={handleInvest}>Invest {investment} Tokens</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="community">
+          <Card className="mb-4">
+            <CardContent>
+              <h2 className="text-lg font-semibold mb-2 text-center">Community Features</h2>
+              <Button className="w-full mb-2">Invite a New Member</Button>
+              <Button className="w-full mb-2">Access Escrow System</Button>
+              <Button className="w-full">Dispute Resolution</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
